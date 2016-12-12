@@ -20,9 +20,9 @@ A regular bus rider from Gold Bar
 Wants quirky gift ideas for her family
 Enjoys clicking for clicking's sake
 Has 5 children, divorced, 35 years old
-
+g
 ##### Tom
 Occasional bus rider
 Does not really want to buy anything, looks at Bus-Mall to pass the times
 Finds the bus incredibly boring
-Has 2 children and five grandkids, widower, 69 years old
+Has 2 children  and five grandkids, widower, 69 years old
