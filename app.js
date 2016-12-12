@@ -1,8 +1,17 @@
- // ******************** Event Handler ********************************
+var selection = document.getElementById("selection");
 
+
+
+ // ******************** Event Handler ********************************
+ function handleSelectionSubmit(event) {
+   event.preventDefault();
+   alert("You made it to step two");
+ }
 
 
 // ********************* Event Listener *********************************
-document.getElementById("selection").addEventListener("click", function() {
-    alert("You clicked the selctor;");
-});
+selection.addEventListener("click", handleSelectionSubmit);
+
+// function(){
+//   alert("you are on step one");
+// })
