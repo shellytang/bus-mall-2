@@ -34,11 +34,24 @@ function alreadyUsed() {
 
 function randomizeNumber() {
     leftRandom = Math.floor(Math.random() * 20);
+    while (previouslyDisplayed.indexOf(leftRandom) > -1) {
+      console.log(leftRandom);
+      leftRandom = Math.floor(Math.random() * 20);
+    }
     previouslyDisplayed.push(leftRandom);
-    alreadyUsed();
+
     centerRandom = Math.floor(Math.random() * 20);
+    while (previouslyDisplayed.indexOf(centerRandom) > -1) {
+      console.log(centerRandom);
+      centerRandom = Math.floor(Math.random() * 20);
+    }
     previouslyDisplayed.push(centerRandom);
+
     rightRandom = Math.floor(Math.random() * 20);
+    while (previouslyDisplayed.indexOf(rightRandom) > -1) {
+      console.log(rightRandom);
+      rightRandom = Math.floor(Math.random() * 20);
+    }
     previouslyDisplayed.push(rightRandom);
 
 }
