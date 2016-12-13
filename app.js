@@ -4,6 +4,8 @@ var totalClicks = 0;
 var selectedProduct = 0;
 var itemsForSale = [];
 var previouslyDisplayed = [];
+var chartSelected = [];
+var chartViewed = [];
 var leftRandom = 0;
 var centerRandom = 0;
 var rightRandom = 0;
@@ -74,7 +76,23 @@ function tallySelectedPic() {
     itemsForSale[rightRandom].timesSelected += 1;
   }
 }
+// ************************* Make a finished list ************************
+function makeFinalList() {
+  for (var i = 0; i < itemsForSale.length; i++) {
+    var finalList = document.getElementById('piclist');
+    var liEl = document.createElement('li');
+    liEl.textContent = 'The ' + itemsForSale[i].productName + ' was selected: ' + itemsForSale[i].timesSelected + ' out of ' + itemsForSale[i].timesViewed + ' times being viewed.'
+    finalList.appendChild(liEl);
+  }
 
+}
+// ****************************** build data arrays for chart **********
+function insertChartData() {
+  for (var i = 0; i < itemsForSale.length; i++) {
+    chartSelected[i] = itemsForSale[i].timesSelected;
+    chartViewed[i] = itemsForSale[i].timesViewed;
+  }
+}
  // ******************** Event Handler ********************************
  function handleSelectionSubmit(event) {
   event.preventDefault();
@@ -93,6 +111,9 @@ function tallySelectedPic() {
 function checkTotalClicks() {
   if (totalClicks > 24) {
     selection.removeEventListener("click", handleSelectionSubmit);
+    makeFinalList();
+    insertChartData();
+    // makeChart();
   }
 }
 
@@ -105,6 +126,26 @@ for (var i = 0; i < productNames.length; i++) {
     if (itemsForSale[i].productName === 'usb') {
       itemsForSale[i].path = 'img/usb.gif';
     }
+}
+
+// ********************************** starting chart trial ********************
+function makeChart() {
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Times Viewed',
+        data: chartViewed,
+        backgroundColor: 'rgba(153,255,51,0.4)'
+      }, {
+        label: 'Times Selected',
+        data: chartSelected,
+        backgroundColor: 'rgba(255,153,0,0.4)'
+      }]
+    }
+  });
 }
 // ************************** page load functions ***************************
  randomizeNumber();
