@@ -1,5 +1,8 @@
 var timesViewed = 0;
 var timesSelected = 0;
+var totalClicks = 0;
+var selectedProduct = 0;
+var itemsForSale = [];
 var previouslyDisplayed = [];
 var leftRandom = 0;
 var centerRandom = 0;
@@ -8,42 +11,39 @@ var left = document.getElementById('left');
 var right = document.getElementById('right');
 var center = document.getElementById('center');
 var selection = document.getElementById('selection');
-var itemsForSale = [];
-var totalClicks = 0;
 var results = document.getElementById('results');
+var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'unicorn', 'water-can', 'wine-glass'];
 
 
-
-function Product(productName, path) {
+// ******************************* constructor ***********************************************
+function Product(productName) {
   this.productName = productName;
-  this.path = path;
+  this.path = 'img/' + productName + '.jpg';
   this.timesViewed = 0;
   this.timesSelected = 0;
   itemsForSale.push(this);
 }
-
+// **************************** create 3 random numbers that don't repeat each other or previous groups *****
 function randomizeNumber() {
     leftRandom = Math.floor(Math.random() * 20);
     while (previouslyDisplayed.indexOf(leftRandom) > -1) {
-      console.log(leftRandom);
       leftRandom = Math.floor(Math.random() * 20);
     }
     previouslyDisplayed.push(leftRandom);
 
     centerRandom = Math.floor(Math.random() * 20);
     while (previouslyDisplayed.indexOf(centerRandom) > -1) {
-      console.log(centerRandom);
       centerRandom = Math.floor(Math.random() * 20);
     }
     previouslyDisplayed.push(centerRandom);
 
     rightRandom = Math.floor(Math.random() * 20);
     while (previouslyDisplayed.indexOf(rightRandom) > -1) {
-      console.log(rightRandom);
       rightRandom = Math.floor(Math.random() * 20);
     }
     previouslyDisplayed.push(rightRandom);
 }
+// ***************************clear first 12 items in previouslyDisplayed array *************
 function cleanUpArray() {
   if (previouslyDisplayed.length > 15) {
     for (var i= 0; i < 12; i++) {
@@ -52,8 +52,7 @@ function cleanUpArray() {
   }
 }
 
-
-
+// ************************ three  random images onto screen **************
 function putImageOnPage() {
 
   left.src = itemsForSale[leftRandom].path;
@@ -63,50 +62,51 @@ function putImageOnPage() {
   right.src = itemsForSale[rightRandom].path;
   itemsForSale[rightRandom].timesViewed += 1;
 }
+// ***************************** tally selected pics ***********************
+function tallySelectedPic() {
+  if (selectedProduct === 'left') {
+    itemsForSale[leftRandom].timesSelected += 1;
+  }
+  if (selectedProduct === 'center') {
+    itemsForSale[centerRandom].timesSelected += 1;
+  }
+  if (selectedProduct === 'right') {
+    itemsForSale[rightRandom].timesSelected += 1;
+  }
+}
 
-
- // ******************** Event Handler ******************************0**
+ // ******************** Event Handler ********************************
  function handleSelectionSubmit(event) {
-   event.preventDefault();
-   totalClicks += 1;
-   alert(event.target)
-   checkTotalClicks();
-   cleanUpArray();
-   randomizeNumber();
-   putImageOnPage();
+  event.preventDefault();
+  totalClicks += 1;
+  selectedProduct = event.target.id;
+  if (selectedProduct === 'selection') {
+    return alert('Sorry, that was not a valid selection.')
+  }
+  tallySelectedPic();
+  checkTotalClicks();
+  cleanUpArray();
+  randomizeNumber();
+  putImageOnPage();
  }
-
+// *********************** check the total clicks and stop after 25 ****
 function checkTotalClicks() {
   if (totalClicks > 24) {
     selection.removeEventListener("click", handleSelectionSubmit);
   }
 }
 
-
-
-//********************* instances *******************************
-
- new Product('bag', 'img/bag.jpg');
- new Product('banana', 'img/banana.jpg');
- new Product('bathroom', 'img/bathroom.jpg');
- new Product('boots',  'img/boots.jpg');
- new Product('breakfast', 'img/breakfast.jpg');
- new Product('bubblebum', 'img/bubblegum.jpg');
- new Product('chair', 'img/chair.jpg');
- new Product('cthulhu', 'img/cthulhu.jpg');
- new Product('dog-duck', 'img/dog-duck.jpg');
- new Product('dragon', 'img/dragon.jpg');
- new Product('pen', 'img/pen.jpg');
- new Product('pet-sweep', 'img/pet-sweep.jpg');
- new Product('scissors', 'img/scissors.jpg');
- new Product('shark', 'img/shark.jpg');
- new Product('sweep', 'img/sweep.png');
- new Product('tauntaun', 'img/tauntaun.jpg');
- new Product('unicorn', 'img/unicorn.jpg');
- new Product('usb', 'img/usb.gif');
- new Product('water-can', 'img/water-can.jpg');
- new Product('wine-glass', 'img/wine-glass.jpg');
-
+//********************* instances **************************************
+for (var i = 0; i < productNames.length; i++) {
+  new Product(productNames[i])
+    if (itemsForSale[i].productName === 'sweep') {
+      itemsForSale[i].path = 'img/sweep.png';
+    }
+    if (itemsForSale[i].productName === 'usb') {
+      itemsForSale[i].path = 'img/usb.gif';
+    }
+}
+// ************************** page load functions ***************************
  randomizeNumber();
  putImageOnPage();
 

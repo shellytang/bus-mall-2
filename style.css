@@ -1,3 +1,14 @@
+h1 {
+  text-align: center;
+}
+fieldset {
+  width: 700px;
+  margin: 0 auto;
+  background-color: grey;
+
+}
+
 img {
   width: 200px;
+  margin-left: 20px;
 }
