@@ -21,38 +21,28 @@ function Product(productName, path) {
   this.timesSelected = 0;
   itemsForSale.push(this);
 }
+function alreadyUsed() {
+  for (var i = 0; i < previouslyDisplayed.length; i++) {
+    console.log(previouslyDisplayed.indexOf(i));
+    if (previouslyDisplayed.indexOf(i) != -1) {
+      console.log('this should fix');
+
+    }
+  }
+}
+
+
 function randomizeNumber() {
     leftRandom = Math.floor(Math.random() * 20);
-    numberTest = alreadyUsed(leftRandom, [previouslyDisplayed]);
-    while(numberTest != false) {
-      leftRandom = Math.floor(Math.random() * 20);
-      numberTest = alreadyUsed(leftRandom, [previouslyDisplayed]);
-    }
     previouslyDisplayed.push(leftRandom);
+    alreadyUsed();
     centerRandom = Math.floor(Math.random() * 20);
-    numberTest = alreadyUsed(centerRandom, [previouslyDisplayed]);
-    while(numberTest != false) {
-      centerRandom = Math.floor(Math.random() * 20);
-      numberTest = alreadyUsed(centerRandom, [previouslyDisplayed]);
-    }
     previouslyDisplayed.push(centerRandom);
     rightRandom = Math.floor(Math.random() * 20);
-    numberTest = alreadyUsed(rightRandom, [previouslyDisplayed]);
-    while(numberTest != false) {
-      rightRandom = Math.floor(Math.random() * 20);
-      numberTest = alreadyUsed(rightRandom, [previouslyDisplayed]);
-    }
     previouslyDisplayed.push(rightRandom);
 
 }
 
-
-function alreadyUsed(value, array) {
-  var bill = array.indexOf(value);
-  console.log(bill);
-  return array.indexOf(value) > -1;
-
-}
 
 
 
