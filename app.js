@@ -1,5 +1,9 @@
 var timesViewed = 0;
 var timesSelected = 0;
+var previouslyDisplayed = [];
+var leftRandom = 0;
+var centerRandom = 0;
+var rightRandom = 0;
 var left = document.getElementById('left');
 var right = document.getElementById('right');
 var center = document.getElementById('center');
@@ -17,18 +21,49 @@ function Product(productName, path) {
   this.timesSelected = 0;
   itemsForSale.push(this);
 }
+function randomizeNumber() {
+    leftRandom = Math.floor(Math.random() * 20);
+    numberTest = alreadyUsed(leftRandom, [previouslyDisplayed]);
+    while(numberTest != false) {
+      leftRandom = Math.floor(Math.random() * 20);
+      numberTest = alreadyUsed(leftRandom, [previouslyDisplayed]);
+    }
+    previouslyDisplayed.push(leftRandom);
+    centerRandom = Math.floor(Math.random() * 20);
+    numberTest = alreadyUsed(centerRandom, [previouslyDisplayed]);
+    while(numberTest != false) {
+      centerRandom = Math.floor(Math.random() * 20);
+      numberTest = alreadyUsed(centerRandom, [previouslyDisplayed]);
+    }
+    previouslyDisplayed.push(centerRandom);
+    rightRandom = Math.floor(Math.random() * 20);
+    numberTest = alreadyUsed(rightRandom, [previouslyDisplayed]);
+    while(numberTest != false) {
+      rightRandom = Math.floor(Math.random() * 20);
+      numberTest = alreadyUsed(rightRandom, [previouslyDisplayed]);
+    }
+    previouslyDisplayed.push(rightRandom);
+
+}
+
+
+function alreadyUsed(value, array) {
+  var bill = array.indexOf(value);
+  console.log(bill);
+  return array.indexOf(value) > -1;
+
+}
+
 
 
 function putImageOnPage() {
-  var leftRandom = Math.floor(Math.random() * 20);
-  var centerRandom = Math.floor(Math.random() * 20);
-  var rightRandom = Math.floor(Math.random() * 20);
-    left.src = itemsForSale[leftRandom].path;
-    itemsForSale[leftRandom].timesViewed += 1;
-    center.src = itemsForSale[centerRandom].path;
-    itemsForSale[centerRandom].timesViewed += 1;
-    right.src = itemsForSale[rightRandom].path;
-    itemsForSale[rightRandom].timesViewed += 1;
+
+  left.src = itemsForSale[leftRandom].path;
+  itemsForSale[leftRandom].timesViewed += 1;
+  center.src = itemsForSale[centerRandom].path;
+  itemsForSale[centerRandom].timesViewed += 1;
+  right.src = itemsForSale[rightRandom].path;
+  itemsForSale[rightRandom].timesViewed += 1;
 }
 
 
@@ -37,6 +72,7 @@ function putImageOnPage() {
    event.preventDefault();
    totalClicks += 1;
    checkTotalClicks();
+   randomizeNumber();
    putImageOnPage();
  }
 
@@ -45,6 +81,7 @@ function checkTotalClicks() {
     selection.removeEventListener("click", handleSelectionSubmit);
   }
 }
+
 
 
 //********************* instances *******************************
@@ -70,7 +107,7 @@ function checkTotalClicks() {
  new Product('water-can', 'img/water-can.jpg');
  new Product('wine-glass', 'img/wine-glass.jpg');
 
-
+ randomizeNumber();
  putImageOnPage();
 
 // ********************* Event Listener *********************************
