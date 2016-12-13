@@ -21,28 +21,36 @@ function Product(productName, path) {
   this.timesSelected = 0;
   itemsForSale.push(this);
 }
-function alreadyUsed() {
-  for (var i = 0; i < previouslyDisplayed.length; i++) {
-    console.log(previouslyDisplayed.indexOf(i));
-    if (previouslyDisplayed.indexOf(i) != -1) {
-      console.log('this should fix');
-
-    }
-  }
-}
-
 
 function randomizeNumber() {
     leftRandom = Math.floor(Math.random() * 20);
+    while (previouslyDisplayed.indexOf(leftRandom) > -1) {
+      console.log(leftRandom);
+      leftRandom = Math.floor(Math.random() * 20);
+    }
     previouslyDisplayed.push(leftRandom);
-    alreadyUsed();
+
     centerRandom = Math.floor(Math.random() * 20);
+    while (previouslyDisplayed.indexOf(centerRandom) > -1) {
+      console.log(centerRandom);
+      centerRandom = Math.floor(Math.random() * 20);
+    }
     previouslyDisplayed.push(centerRandom);
+
     rightRandom = Math.floor(Math.random() * 20);
+    while (previouslyDisplayed.indexOf(rightRandom) > -1) {
+      console.log(rightRandom);
+      rightRandom = Math.floor(Math.random() * 20);
+    }
     previouslyDisplayed.push(rightRandom);
-
 }
-
+function cleanUpArray() {
+  if (previouslyDisplayed.length > 15) {
+    for (var i= 0; i < 12; i++) {
+      previouslyDisplayed.shift();
+    }
+  }
+}
 
 
 
@@ -61,7 +69,9 @@ function putImageOnPage() {
  function handleSelectionSubmit(event) {
    event.preventDefault();
    totalClicks += 1;
+   alert(event.target)
    checkTotalClicks();
+   cleanUpArray();
    randomizeNumber();
    putImageOnPage();
  }
