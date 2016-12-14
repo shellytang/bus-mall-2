@@ -139,7 +139,7 @@ function toggleChart() {
   console.log(checkdown);
 
   document.getElementById('chartcontainer').hidden = true;
-  if (checkdown === 0) {
+  if (checkdown === 1) {
     document.getElementById('chartcontainer').hidden = false;
   }
 }
@@ -170,7 +170,7 @@ for (var i = 0; i < productNames.length; i++) {
 function makeChart() {
   var ctx = document.getElementById("myChart").getContext("2d");
   var myChart = new Chart(ctx, {
-    type: 'polarArea',
+    type: 'bar',
     data: {
       labels: productNames,
       datasets: [{
@@ -186,6 +186,7 @@ function makeChart() {
   });
 }
 // ************************** page load functions ***************************
+document.getElementById('chartcontainer').hidden = true;
 hideList();
 randomizeNumber();
 putImageOnPage();
