@@ -17,7 +17,6 @@ var center = document.getElementById('center');
 var selection = document.getElementById('selection');
 var results = document.getElementById('results');
 var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'unicorn', 'water-can', 'wine-glass'];
-
 // ******************************* constructor ***********************************************
 function Product(productName) {
   this.productName = productName;
@@ -54,7 +53,6 @@ function cleanUpArray() {
 }
 // ************************ three  random images onto screen **************
 function putImageOnPage() {
-
   left.src = itemsForSale[leftRandom].path;
   itemsForSale[leftRandom].timesViewed += 1;
   center.src = itemsForSale[centerRandom].path;
@@ -87,7 +85,6 @@ function makeFinalList() {
     liEl.textContent = 'The ' + itemsForSale[i].productName + ' was selected: ' + itemsForSale[i].timesSelected + ' out of ' + itemsForSale[i].timesViewed + ' times being viewed.'
     finalList.appendChild(liEl);
   }
-
 }
 // ****************************** build data arrays for chart **********
 function insertChartData() {
@@ -129,18 +126,16 @@ function showHideHandler(event) {
 // ******************** toggle the list and chart ***********************
 function toggleResults() {
   var checkup = resultsToggle % 2;
-  document.getElementById('piclist').hidden = true;
-  if (checkup === 0) {
-    document.getElementById('piclist').hidden = false;
+  document.getElementById('piclist').style.display = 'none';
+  if (checkup === 1) {
+    document.getElementById('piclist').style.display = 'inline-block';
   }
 }
 function toggleChart() {
   var checkdown = chartToggle % 2;
-  console.log(checkdown);
-
-  document.getElementById('chartcontainer').hidden = true;
+  document.getElementById('chartcontainer').style.display = 'none';
   if (checkdown === 1) {
-    document.getElementById('chartcontainer').hidden = false;
+    document.getElementById('chartcontainer').style.display = 'inline-block';
   }
 }
 // *********************** check the total clicks and do stop actions ****
@@ -153,7 +148,6 @@ function checkTotalClicks() {
     insertChartData();
     makeFinalList();
     makeChart();
-
   }
 }
 //********************* instances **************************************
@@ -181,12 +175,24 @@ function makeChart() {
         label: 'Times Selected',
         data: chartSelected,
         backgroundColor: 'rgba(29, 147, 13, 0.6)'
-      }]
-    }
+      }],
+    },
+    options: {
+      responsive: true
+    },
+    scales: [{
+      ticks: {
+        beginAtZero: true
+      }
+    }]
   });
+  chartDrawn = true;
 }
 // ************************** page load functions ***************************
-document.getElementById('chartcontainer').hidden = true;
+// document.getElementById('piclist').style.display = 'none';
+// document.getElementById('chartcontainer').style.display = 'none';
+toggleChart();
+toggleResults();
 hideList();
 randomizeNumber();
 putImageOnPage();
