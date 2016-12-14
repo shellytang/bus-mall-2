@@ -3,6 +3,7 @@ h1 {
 }
 fieldset {
   width: 1000px;
+  height: 500;
   margin: 0 auto;
   background-color: grey;
 
@@ -12,4 +13,9 @@ img {
   width: 300px;
   height: 300px;
   margin-left: 20px;
+}
+div {
+  width: 500px;
+  margin: 20px auto;
+  background-color: grey;
 }

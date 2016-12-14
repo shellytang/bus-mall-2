@@ -9,13 +9,14 @@ var chartViewed = [];
 var leftRandom = 0;
 var centerRandom = 0;
 var rightRandom = 0;
+var resultsToggle = 2;
+var chartToggle = 2;
 var left = document.getElementById('left');
 var right = document.getElementById('right');
 var center = document.getElementById('center');
 var selection = document.getElementById('selection');
 var results = document.getElementById('results');
 var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'unicorn', 'water-can', 'wine-glass'];
-
 
 // ******************************* constructor ***********************************************
 function Product(productName) {
@@ -32,13 +33,11 @@ function randomizeNumber() {
       leftRandom = Math.floor(Math.random() * 20);
     }
     previouslyDisplayed.push(leftRandom);
-
     centerRandom = Math.floor(Math.random() * 20);
     while (previouslyDisplayed.indexOf(centerRandom) > -1) {
       centerRandom = Math.floor(Math.random() * 20);
     }
     previouslyDisplayed.push(centerRandom);
-
     rightRandom = Math.floor(Math.random() * 20);
     while (previouslyDisplayed.indexOf(rightRandom) > -1) {
       rightRandom = Math.floor(Math.random() * 20);
@@ -53,7 +52,6 @@ function cleanUpArray() {
     }
   }
 }
-
 // ************************ three  random images onto screen **************
 function putImageOnPage() {
 
@@ -75,6 +73,11 @@ function tallySelectedPic() {
   if (selectedProduct === 'right') {
     itemsForSale[rightRandom].timesSelected += 1;
   }
+}
+//********************************** Hide the list **********************
+function hideList() {
+  document.getElementById('results').hidden = true;
+  document.getElementById('chart').hidden = true;
 }
 // ************************* Make a finished list ************************
 function makeFinalList() {
@@ -107,16 +110,52 @@ function insertChartData() {
   randomizeNumber();
   putImageOnPage();
  }
-// *********************** check the total clicks and stop after 25 ****
+ // ************************** Show Hide Handler **************************
+function showHideHandler(event) {
+  event.preventDefault();
+  var hideOrShow = event.target.id;
+  if (hideOrShow === 'choicebar') {
+    return alert('Sorry, that was not a valid choice.')
+  }
+  if (hideOrShow === 'results') {
+    resultsToggle +=1;
+    toggleResults();
+  }
+  if (hideOrShow === 'chart') {
+    chartToggle += 1;
+    toggleChart();
+  }
+}
+// ******************** toggle the list and chart ***********************
+function toggleResults() {
+  var checkup = resultsToggle % 2;
+  document.getElementById('piclist').hidden = true;
+  if (checkup === 0) {
+    document.getElementById('piclist').hidden = false;
+  }
+}
+function toggleChart() {
+  var checkdown = chartToggle % 2;
+  console.log(checkdown);
+
+  document.getElementById('chartcontainer').hidden = true;
+  if (checkdown === 0) {
+    document.getElementById('chartcontainer').hidden = false;
+  }
+}
+// *********************** check the total clicks and do stop actions ****
 function checkTotalClicks() {
   if (totalClicks > 24) {
     selection.removeEventListener("click", handleSelectionSubmit);
-    makeFinalList();
+    document.getElementById('results').hidden = false;
+    document.getElementById('chart').hidden = false;
+    choicebar.addEventListener("click", showHideHandler);
     insertChartData();
-    // makeChart();
+    makeFinalList();
+    makeChart();
+
   }
 }
-
 //********************* instances **************************************
 for (var i = 0; i < productNames.length; i++) {
   new Product(productNames[i])
@@ -127,29 +166,28 @@ for (var i = 0; i < productNames.length; i++) {
       itemsForSale[i].path = 'img/usb.gif';
     }
 }
-
 // ********************************** starting chart trial ********************
 function makeChart() {
   var ctx = document.getElementById("myChart").getContext("2d");
   var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'polarArea',
     data: {
       labels: productNames,
       datasets: [{
         label: 'Times Viewed',
         data: chartViewed,
-        backgroundColor: 'rgba(153,255,51,0.4)'
+        backgroundColor: 'rgba(11, 54, 124, 0.6)'
       }, {
         label: 'Times Selected',
         data: chartSelected,
-        backgroundColor: 'rgba(255,153,0,0.4)'
+        backgroundColor: 'rgba(29, 147, 13, 0.6)'
       }]
     }
   });
 }
 // ************************** page load functions ***************************
- randomizeNumber();
- putImageOnPage();
-
+hideList();
+randomizeNumber();
+putImageOnPage();
 // ********************* Event Listener *********************************
 selection.addEventListener("click", handleSelectionSubmit);
