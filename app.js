@@ -6,6 +6,7 @@ var itemsForSale = [];
 var previouslyDisplayed = [];
 var chartSelected = [];
 var chartViewed = [];
+var myStorage = [];
 var leftRandom = 0;
 var centerRandom = 0;
 var rightRandom = 0;
@@ -28,21 +29,21 @@ function Product(productName) {
 }
 // **************************** create 3 random numbers that don't repeat each other or previous groups *****
 function randomizeNumber() {
+  leftRandom = Math.floor(Math.random() * 20);
+  while (previouslyDisplayed.indexOf(leftRandom) > -1) {
     leftRandom = Math.floor(Math.random() * 20);
-    while (previouslyDisplayed.indexOf(leftRandom) > -1) {
-      leftRandom = Math.floor(Math.random() * 20);
-    }
-    previouslyDisplayed.push(leftRandom);
+  }
+  previouslyDisplayed.push(leftRandom);
+  centerRandom = Math.floor(Math.random() * 20);
+  while (previouslyDisplayed.indexOf(centerRandom) > -1) {
     centerRandom = Math.floor(Math.random() * 20);
-    while (previouslyDisplayed.indexOf(centerRandom) > -1) {
-      centerRandom = Math.floor(Math.random() * 20);
-    }
-    previouslyDisplayed.push(centerRandom);
+  }
+  previouslyDisplayed.push(centerRandom);
+  rightRandom = Math.floor(Math.random() * 20);
+  while (previouslyDisplayed.indexOf(rightRandom) > -1) {
     rightRandom = Math.floor(Math.random() * 20);
-    while (previouslyDisplayed.indexOf(rightRandom) > -1) {
-      rightRandom = Math.floor(Math.random() * 20);
-    }
-    previouslyDisplayed.push(rightRandom);
+  }
+  previouslyDisplayed.push(rightRandom);
 }
 // ***************************clear first 12 items in previouslyDisplayed array *************
 function cleanUpArray() {
@@ -97,7 +98,7 @@ function insertChartData() {
   }
 }
  // ******************** Event Handler ********************************
- function handleSelectionSubmit(event) {
+function handleSelectionSubmit(event) {
   event.preventDefault();
   totalClicks += 1;
   selectedProduct = event.target.id;
@@ -105,11 +106,12 @@ function insertChartData() {
     return alert('Sorry, that was not a valid selection.')
   }
   tallySelectedPic();
+  localStorage.myStorage = JSON.stringify(itemsForSale);
   checkTotalClicks();
   cleanUpArray();
   randomizeNumber();
   putImageOnPage();
- }
+}
  // ************************** Show Hide Handler **************************
 function showHideHandler(event) {
   event.preventDefault();
@@ -157,14 +159,16 @@ function checkTotalClicks() {
   }
 }
 //********************* instances **************************************
-for (var i = 0; i < productNames.length; i++) {
-  new Product(productNames[i])
+function createArray () {
+  for (var i = 0; i < productNames.length; i++) {
+    new Product(productNames[i])
     if (itemsForSale[i].productName === 'sweep') {
       itemsForSale[i].path = 'img/sweep.png';
     }
     if (itemsForSale[i].productName === 'usb') {
       itemsForSale[i].path = 'img/usb.gif';
     }
+  }
 }
 // ********************************** starting chart trial ********************
 function makeChart() {
@@ -185,6 +189,18 @@ function makeChart() {
     }
   });
 }
+
+//**************************Local Storage***********************
+if (!localStorage.myStorage) {
+  createArray();
+  console.log('no local');
+} else {
+  var tempDataHolder = localStorage.getItem('myStorage');
+  var parseData = JSON.parse(tempDataHolder);
+  itemsForSale = parseData;
+}
+
+//***************************************************************
 // ************************** page load functions ***************************
 hideList();
 randomizeNumber();
